@@ -1,0 +1,150 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+
+```
+<div class="row">
+
+    <!-- LEFT SIDE -->
+    <div class="col-md-8">
+
+        <div class="card p-4 shadow-sm rounded-4">
+
+            <h3 class="fw-bold mb-4">
+                📱 Tell us about your device
+            </h3>
+
+            <!-- QUESTION 1 -->
+            <div class="question-box mb-4">
+                <p class="fw-semibold">1. Are you able to make calls?</p>
+
+                <div class="option-card" onclick="selectOption(this, 'call', 0)">
+                    Yes
+                </div>
+
+                <div class="option-card" onclick="selectOption(this, 'call', -3000)">
+                    No
+                </div>
+            </div>
+
+            <!-- QUESTION 2 -->
+            <div class="question-box mb-4">
+                <p class="fw-semibold">2. Is the screen working properly?</p>
+
+                <div class="option-card" onclick="selectOption(this, 'screen', 0)">
+                    Yes
+                </div>
+
+                <div class="option-card" onclick="selectOption(this, 'screen', -2000)">
+                    No
+                </div>
+            </div>
+
+            <!-- BUTTON -->
+            <button class="btn btn-dark w-100 py-2 mt-3"
+                    onclick="goToResult()">
+                Continue →
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="col-md-4">
+
+        <div class="summary-box p-4 shadow rounded-4">
+
+            <h5 class="fw-bold">{{ device.name }}</h5>
+            <p class="text-muted">{{ variant.name }}</p>
+
+            <hr>
+
+            <h2 class="text-success fw-bold">
+                ₹ <span id="finalPrice"></span>
+            </h2>
+
+            <p class="text-muted small">Estimated resale value</p>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<style>
+
+/* OPTION CARDS */
+.option-card {
+    border: 2px solid #eee;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.option-card:hover {
+    border-color: #28a745;
+}
+
+.option-card.active {
+    border: 2px solid #28a745;
+    background: #eafaf1;
+}
+
+/* SUMMARY */
+.summary-box {
+    background: #fff;
+}
+
+</style>
+
+<script>
+
+let basePrice = parseInt("{{ variant.price }}");
+
+let deductions = {
+    call: 0,
+    screen: 0
+};
+
+// initial price
+document.getElementById("finalPrice").innerText = basePrice;
+
+function selectOption(element, question, value) {
+
+    let parent = element.parentElement;
+
+    parent.querySelectorAll('.option-card').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    element.classList.add('active');
+
+    basePrice = basePrice - deductions[question];
+    deductions[question] = value;
+    basePrice = basePrice + value;
+
+    document.getElementById("finalPrice").innerText = basePrice;
+}
+
+function goToResult() {
+
+    if (basePrice <= 0) {
+        alert("Please select valid options");
+        return;
+    }
+
+    let url = "{% url 'result' device.brand.name device.name %}";
+
+    window.location.href = url + "?variant_id={{ variant.id }}&price=" + basePrice;
+}
+
+</script>
+
+{% endblock %}

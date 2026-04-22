@@ -1,0 +1,110 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="text-center fw-bold mb-4">Select Brand</h2>
+
+    <!-- ✅ ADD DEVICE BUTTON (ADMIN ONLY) -->
+    {% if user.is_staff %}
+    <div class="text-center mb-4">
+        <a href="{% url 'device_create' %}" class="btn btn-dark">
+            + Add New Device
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="row g-4 justify-content-center">
+
+        {% for brand in brands %}
+        <div class="col-md-3 col-6">
+
+            <div class="brand-card text-center p-4 position-relative">
+
+                <!-- ✅ ADMIN ACTIONS -->
+                {% if user.is_staff %}
+                <div class="admin-actions">
+                    <a href="{% url 'brand_update' brand.id %}" class="edit-btn">✏️</a>
+                    <a href="{% url 'brand_delete' brand.id %}" class="delete-btn">🗑️</a>
+                </div>
+                {% endif %}
+
+                <!-- CLICKABLE AREA -->
+                <a href="{% url 'select_model' brand.name %}" class="text-decoration-none text-dark">
+
+                    <div class="brand-img-box">
+                        <img src="{{ brand.logo.url }}">
+                    </div>
+
+                    <h5 class="mt-3">{{ brand.name }}</h5>
+
+                </a>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<style>
+.brand-card {
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #eee;
+    transition: 0.3s;
+    height: 180px;
+    position: relative;
+}
+
+.brand-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.brand-img-box {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-img-box img {
+    max-height: 60px;
+    object-fit: contain;
+}
+
+/* ✅ ADMIN BUTTONS */
+.admin-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+}
+
+.edit-btn, .delete-btn {
+    background: white;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: 0.2s;
+}
+
+.edit-btn:hover {
+    background: #ffc107;
+}
+
+.delete-btn:hover {
+    background: #dc3545;
+    color: white;
+}
+</style>
+
+{% endblock %}

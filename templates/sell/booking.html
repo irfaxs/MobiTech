@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="booking-card">
+
+        <h3 class="fw-bold mb-3">Book Pickup</h3>
+
+        <p class="text-muted">{{ device.name }} • {{ variant.name }}</p>
+
+        <h2 class="price-highlight">₹ {{ price }}</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="name" placeholder="Full Name" class="form-input" required>
+            <input type="text" name="phone" placeholder="Phone Number" class="form-input" required>
+            <textarea name="address" placeholder="Pickup Address" class="form-input" required></textarea>
+
+            <button class="btn confirm-btn w-100 mt-3">
+                Confirm Booking
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<style>
+.booking-card {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.price-highlight {
+    color: #28a745;
+    font-weight: 700;
+}
+
+.confirm-btn {
+    background: linear-gradient(135deg,#28a745,#1e7e34);
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="fw-bold mb-4">Buy Accessories</h2>
+
+    <div class="row g-4">
+
+        {% for product in products %}
+        <div class="col-lg-3 col-md-4 col-6">
+
+            <a href="{% url 'product_detail' product.pk %}" 
+               class="text-decoration-none text-dark">
+
+                <div class="product-card p-3">
+
+                    <div class="product-img-box">
+                        <img src="{{ product.image.url }}" class="img-fluid">
+                    </div>
+
+                    <p class="product-title mt-3">
+                        {{ product.name }}
+                    </p>
+
+                    <h5 class="product-price">
+                        ₹ {{ product.price }}
+                    </h5>
+
+                    <p class="text-muted small">
+                        {{ product.condition }}
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+        {% empty %}
+        <p>No accessories available</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

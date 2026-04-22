@@ -1,0 +1,75 @@
+<div class="container mt-3">
+
+<!-- 🔥 ADD BUTTON -->
+{% if user.is_staff %}
+<a href="{% url 'carousel_create' %}" class="btn btn-success mb-3">
+    + Add Carousel
+</a>
+{% endif %}
+
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+
+  <div class="carousel-inner custom-carousel">
+
+    {% for carousel_image in carousel_images %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+      <!-- 🔥 IMPORTANT WRAPPER -->
+      <div class="position-relative">
+
+        <!-- 🔥 STAFF CONTROLS (FIXED POSITION) -->
+        {% if user.is_staff %}
+        <div class="admin-controls">
+
+          <a href="{% url 'carousel_update' carousel_image.pk %}" 
+             class="btn btn-warning btn-sm">
+             Edit
+          </a>
+
+          <a href="{% url 'carousel_delete' carousel_image.pk %}" 
+             class="btn btn-danger btn-sm">
+             Delete
+          </a>
+
+        </div>
+        {% endif %}
+
+        <div class="carousel-content">
+
+          <!-- LEFT TEXT -->
+          <div class="carousel-text">
+            <h2>{{ carousel_image.title }}</h2>
+            <p>{{ carousel_image.caption }}</p>
+
+            <div class="d-flex gap-3 mt-3">
+              <a href="#" class="btn btn-light">Shop Now</a>
+              <a href="#" class="btn btn-outline-light">Explore</a>
+            </div>
+          </div>
+
+          <!-- RIGHT IMAGE -->
+          <div class="carousel-image">
+            <img src="{{ carousel_image.image.url }}">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+
+  <!-- Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    ‹
+  </button>
+
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    ›
+  </button>
+
+</div>
+
+</div>

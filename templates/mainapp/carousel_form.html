@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container mt-5" style="max-width:600px;">
+
+    <h3 class="mb-4">Add / Edit Carousel</h3>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button class="btn btn-success">Save</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+
+    </form>
+
+</div>
+{% endblock %}

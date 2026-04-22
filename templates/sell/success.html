@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container mt-5 text-center">
+
+    <div class="success-card">
+
+        <div class="checkmark">✓</div>
+
+        <h2 class="fw-bold mt-3 text-success">Booking Confirmed!</h2>
+
+        <p class="text-muted mt-2">
+            Our executive will contact you shortly for pickup.
+        </p>
+
+        <a href="/" class="btn home-btn mt-3">
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+<style>
+.success-card {
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.checkmark {
+    font-size: 60px;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.home-btn {
+    background: #212529;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 10px;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="text-center fw-bold mb-5">
+        Select Model ({{ brand.name }})
+    </h2>
+
+    <div class="row g-4">
+
+
+        {% for device in devices %}
+        <div class="col-md-3 col-6">
+
+    {% if user.is_staff %}
+<div class="mt-2">
+
+    <a href="{% url 'device_update' device.id %}" 
+       class="btn btn-warning btn-sm">
+        Edit
+    </a>
+
+    <a href="{% url 'device_delete' device.id %}" 
+       class="btn btn-danger btn-sm">
+        Delete
+    </a>
+
+</div>
+{% endif %}
+
+            <a href="{% url 'device_detail' brand.name device.name %}" 
+               class="text-decoration-none text-dark">
+
+                <div class="device-card p-3 text-center">
+
+                    <div class="device-img-box">
+                        <img src="{{ device.image.url }}">
+                    </div>
+
+                    <p class="mt-3 device-name">
+                        {{ device.name }}
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+    
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<style>
+.device-card {
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #eee;
+    transition: 0.3s;
+    height: 220px;
+}
+
+.device-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.device-img-box {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.device-img-box img {
+    max-height: 120px;
+    object-fit: contain;
+}
+
+/* FIX TEXT BREAK */
+.device-name {
+    font-size: 14px;
+    font-weight: 500;
+    min-height: 40px;
+}
+</style>
+
+{% endblock %}

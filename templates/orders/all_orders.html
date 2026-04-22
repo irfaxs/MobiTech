@@ -1,0 +1,124 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+
+
+<h2 class="fw-bold mb-4">My Orders</h2>
+
+<!-- TABS -->
+<div class="tabs mb-4">
+    <button class="tab-btn active" onclick="showTab('buy')">Buy Orders</button>
+    <button class="tab-btn" onclick="showTab('sell')">Sell Requests</button>
+</div>
+
+<!-- BUY ORDERS -->
+<div id="buy" class="tab-content">
+
+    {% for order in buy_orders %}
+    <div class="order-card d-flex justify-content-between align-items-center">
+
+        <div class="d-flex gap-3 align-items-center">
+            <img src="{{ order.product.image.url }}" class="order-img">
+
+            <div>
+                <h6>{{ order.product.name }}</h6>
+                <p class="text-muted mb-1">Qty: {{ order.quantity }}</p>
+            </div>
+        </div>
+
+        <h6 class="text-success">₹ {{ order.total_price }}</h6>
+
+    </div>
+    {% empty %}
+    <p>No buy orders</p>
+    {% endfor %}
+
+</div>
+
+<!-- SELL ORDERS -->
+<div id="sell" class="tab-content d-none">
+
+    {% for order in sell_orders %}
+    <div class="order-card d-flex justify-content-between align-items-center">
+
+        <div class="d-flex gap-3 align-items-center">
+            <img src="{{ order.device.image.url }}" class="order-img">
+
+            <div>
+                <h6>{{ order.device.name }}</h6>
+                <p class="text-muted mb-1">{{ order.variant.name }}</p>
+            </div>
+        </div>
+
+        <div class="text-end">
+            <h6 class="text-success">₹ {{ order.price }}</h6>
+
+            {% if order.status == 'pending' %}
+                <span class="badge bg-warning text-dark">Pending</span>
+            {% else %}
+                <span class="badge bg-success">Completed</span>
+            {% endif %}
+        </div>
+
+    </div>
+    {% empty %}
+    <p>No sell requests</p>
+    {% endfor %}
+
+</div>
+
+
+</div>
+
+<style>
+.tabs {
+    display: flex;
+    gap: 10px;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border: none;
+    background: #eee;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: black;
+    color: white;
+}
+
+.order-card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.order-img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+</style>
+
+<script>
+function showTab(type){
+
+    document.getElementById('buy').classList.add('d-none');
+    document.getElementById('sell').classList.add('d-none');
+
+    document.getElementById(type).classList.remove('d-none');
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    event.target.classList.add('active');
+}
+</script>
+
+{% endblock %}

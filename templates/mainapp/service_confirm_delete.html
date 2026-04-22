@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h3>Delete Service?</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <button class="btn btn-danger">Confirm</button>
+    </form>
+</div>
+{% endblock %}

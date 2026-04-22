@@ -1,0 +1,91 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="fw-bold mb-4">Buy Laptops</h2>
+
+    <div class="row g-4">
+
+        {% for product in products %}
+        <div class="col-lg-3 col-md-4 col-6">
+
+            <a href="{% url 'product_detail' product.pk %}" 
+               class="text-decoration-none text-dark">
+
+                <div class="product-card p-3">
+
+                    <!-- IMAGE -->
+                    <div class="product-img-box">
+                        <img src="{{ product.image.url }}" class="img-fluid">
+                    </div>
+
+                    <!-- DETAILS -->
+                    <p class="product-title mt-3">
+                        {{ product.name }}
+                    </p>
+
+                    <h5 class="product-price">
+                        ₹ {{ product.price }}
+                    </h5>
+
+                    <p class="text-muted small">
+                        {{ product.condition }}
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+        {% empty %}
+        <p>No laptops available</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<!-- CSS -->
+<style>
+.product-card {
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #eee;
+    transition: 0.3s;
+    height: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.product-img-box {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f7f7;
+    border-radius: 10px;
+}
+
+.product-img-box img {
+    max-height: 150px;
+    object-fit: contain;
+}
+
+.product-title {
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 40px;
+}
+
+.product-price {
+    color: #28a745;
+    font-weight: bold;
+}
+</style>
+
+{% endblock %}

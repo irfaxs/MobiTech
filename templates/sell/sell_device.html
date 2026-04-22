@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row">
+        <!-- IMAGE -->
+        <div class="col-md-4 text-center">
+            <img src="{{ device.image.url }}" class="img-fluid" style="max-height:350px;">
+        </div>
+
+        <!-- DETAILS -->
+        <div class="col-md-8">
+            <h2>{{ device.name }}</h2>
+
+            <!-- ✅ ONLY ONE PRICE -->
+            <h3 class="text-success">
+                ₹ <span id="price"></span>
+            </h3>
+        </div>
+    </div>
+
+    <!-- VARIANTS -->
+    <h4 class="mt-4">Choose Variant</h4>
+
+    <div class="d-flex gap-3 flex-wrap">
+
+        {% for variant in variants %}
+        <div class="variant-card p-3 border rounded-3 text-center"
+             onclick="selectVariant(this, '{{ variant.price }}')">
+
+            {{ variant.name }}
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <hr>
+
+    <!-- QUESTIONS -->
+    <h4>Tell us about your device</h4>
+
+    <p>1. Are you able to make calls?</p>
+    <button class="btn btn-outline-success">Yes</button>
+    <button class="btn btn-outline-danger">No</button>
+
+</div>
+
+<!-- ================= CSS ================= -->
+<style>
+.variant-card {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.variant-card:hover {
+    border-color: green;
+}
+
+.variant-card.active {
+    border: 2px solid green;
+    background-color: #e8f8f5;
+}
+</style>
+
+<!-- ================= JS ================= -->
+<script>
+
+function selectVariant(element) {
+
+    let price = element.getAttribute("data-price");
+
+    console.log("FIXED PRICE:", price);
+
+    document.querySelectorAll('.variant-card').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    element.classList.add('active');
+
+    document.getElementById("price").innerText = price;
+}
+
+window.onload = function() {
+    let first = document.querySelector('.variant-card');
+    if (first) {
+        first.click();
+    }
+}
+
+</script>
+
+{% endblock %}

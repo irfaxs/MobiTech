@@ -1,0 +1,133 @@
+{% load static %}
+
+<!-- TOP NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm py-2 sticky-top">
+  <div class="container">
+
+    <!-- LOGO -->
+    <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="{% static 'images/logo1.png' %}" class="logo-img">
+    </a>
+
+    <!-- SEARCH BAR -->
+    <div class="search-container flex-grow-1 mx-4 position-relative">
+
+        <i class="bi bi-search"></i>
+
+        <input type="text" 
+               id="searchInput"
+               placeholder="Search for mobiles, accessories & More"
+               autocomplete="off">
+
+        <!-- LIVE RESULT BOX -->
+        <div id="searchResults" class="search-results-box"></div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="d-flex align-items-center gap-3">
+
+        <div class="location">
+            📍 Gurgaon
+            <span class="arrow">▼</span>
+        </div>
+
+        <!-- 🛒 CART BUTTON -->
+        <a href="{% url 'cart_view' %}" class="cart-btn position-relative">
+            🛒
+
+            {% if cart_count > 0 %}
+            <span class="cart-badge">{{ cart_count }}</span>
+            {% endif %}
+        </a>
+
+       <a href="{% url 'my_orders' %}" class="btn btn-outline-dark">
+    My Orders
+</a>
+
+        <!-- 🔐 AUTH SECTION -->
+        {% if user.is_authenticated %}
+
+        <div class="d-flex align-items-center gap-2">
+
+            <span class="me-2">Hi, {{ user.username }}</span>
+
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="/">
+                <button type="submit" class="btn login-btn">
+                    Logout
+                </button>
+            </form>
+
+        </div>
+
+        {% else %}
+
+        <a href="{% url 'login' %}" class="btn login-btn">
+            Login
+        </a>
+
+        {% endif %}
+
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- SECOND NAVBAR -->
+<div class="menu-bar bg-white border-top border-bottom py-2">
+  <div class="container d-flex gap-4 flex-wrap">
+
+    <div class="menu-item">All ▼</div>
+
+    <!-- SELL PHONE -->
+    <div class="dropdown">
+        <a class="menu-item">Sell Phone ▼</a>
+        <div class="dropdown-menu-custom">
+
+            <a href="{% url 'select_brand' %}">All Brands</a>
+
+            {% for brand in brands %}
+            <a href="{% url 'select_model' brand.name %}">
+                {{ brand.name }}
+            </a>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <!-- SELL GADGETS -->
+    <div class="dropdown">
+        <a class="menu-item">Sell Gadgets ▼</a>
+        <div class="dropdown-menu-custom">
+            <a href="{% url 'accessory_list' %}">Accessories</a>
+            <a href="#">Smart Watches</a>
+            <a href="#">Headphones</a>
+        </div>
+    </div>
+
+    <!-- BUY DEVICES -->
+    <div class="dropdown">
+        <a class="menu-item">Buy Refurbished Devices ▼</a>
+        <div class="dropdown-menu-custom">
+            <a href="{% url 'product_list' %}">All Phones</a>
+            <a href="{% url 'laptop_list' %}">Laptops</a>
+            <a href="{% url 'accessory_list' %}">Accessories</a>
+        </div>
+    </div>
+
+    <!-- BUY LAPTOP -->
+    <div class="dropdown">
+        <a class="menu-item">Buy Laptop ▼</a>
+        <div class="dropdown-menu-custom">
+            <a href="{% url 'laptop_list' %}">All Laptops</a>
+           
+        </div>
+    </div>
+
+    
+
+  </div>
+</div>

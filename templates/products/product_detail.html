@@ -1,0 +1,204 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row">
+
+        <!-- LEFT SIDE (IMAGES) -->
+        <div class="col-md-6">
+
+            <!-- MAIN IMAGE -->
+            <div class="main-image mb-3">
+                <img id="mainImage" src="{{ product.image.url }}" class="img-fluid rounded">
+            </div>
+
+            <!-- THUMBNAILS -->
+            <div class="d-flex gap-2 flex-wrap">
+
+                <!-- Main image -->
+                <img src="{{ product.image.url }}" 
+                     class="thumb-img active-thumb"
+                     onclick="changeImage(this)">
+
+                <!-- Extra images -->
+                {% for img in product.images.all|slice:":3" %}
+                <img src="{{ img.image.url }}" 
+                     class="thumb-img"
+                     onclick="changeImage(this)">
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE (DETAILS) -->
+        <div class="col-md-6">
+
+            <h2 class="product-title">{{ product.name }}</h2>
+
+            <!-- ✅ ONLY ONE PRICE -->
+            <h3 class="price">₹ {{ product.price }}</h3>
+
+            <p class="sub-text">
+                Refurbished • 6 Months Warranty
+            </p>
+
+            <hr>
+
+            {% if variants %}
+            {% with variant=variants.0 %}
+
+            <!-- CONDITION -->
+            <div class="info-box">
+                <h6>Condition</h6>
+                <span class="badge condition">
+                    {{ variant.condition }}
+                </span>
+            </div>
+
+            <!-- STORAGE -->
+            <div class="info-box">
+                <h6>Storage</h6>
+                <span class="badge storage">
+                    {{ variant.storage }}
+                </span>
+            </div>
+
+            <!-- STOCK -->
+            <div class="info-box">
+                <h6>Availability</h6>
+                {% if variant.stock > 0 %}
+                    <span class="in-stock">
+                        In Stock ({{ variant.stock }})
+                    </span>
+                {% else %}
+                    <span class="out-stock">
+                        Out of Stock
+                    </span>
+                {% endif %}
+            </div>
+
+            {% endwith %}
+            {% endif %}
+
+            <hr>
+
+            <a href="{% url 'add_to_cart' product.id %}" 
+   class="btn buy-btn w-100 mt-3">
+    Add to Cart
+</a>
+
+            <!-- BUY BUTTON -->
+            <button class="btn buy-btn w-100 mt-3">
+                Buy Now
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- CSS -->
+<style>
+.product-title {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.price {
+    font-size: 30px;
+    font-weight: 700;
+    color: #198754;
+}
+
+.sub-text {
+    color: #6c757d;
+}
+
+.info-box {
+    margin-bottom: 15px;
+}
+
+.info-box h6 {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.badge.condition {
+    background: #198754;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: white;
+}
+
+.badge.storage {
+    background: #212529;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: white;
+}
+
+.in-stock {
+    color: #198754;
+    font-weight: 500;
+}
+
+.out-stock {
+    color: red;
+    font-weight: 500;
+}
+
+.buy-btn {
+    background: #212529;
+    color: white;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+.buy-btn:hover {
+    background: black;
+}
+
+.main-image img {
+    height: 350px;
+    object-fit: contain;
+    width: 100%;
+}
+
+.thumb-img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.thumb-img:hover {
+    border-color: black;
+}
+
+.active-thumb {
+    border: 2px solid black !important;
+}
+</style>
+
+<!-- JS -->
+<script>
+function changeImage(element) {
+    document.getElementById("mainImage").src = element.src;
+
+    document.querySelectorAll('.thumb-img').forEach(img => {
+        img.classList.remove('active-thumb');
+    });
+
+    element.classList.add('active-thumb');
+}
+</script>
+
+{% endblock %}

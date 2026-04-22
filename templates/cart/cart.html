@@ -1,0 +1,169 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="fw-bold mb-4">My Cart</h2>
+
+{% for item in cart_items %}
+<div class="cart-card d-flex justify-content-between align-items-center">
+
+    <!-- LEFT -->
+    <div class="d-flex align-items-center gap-3">
+        <img src="{{ item.product.image.url }}" class="cart-img">
+
+        <div>
+            <h5>{{ item.product.name }}</h5>
+            <p class="text-muted mb-1">₹ {{ item.product.price }}</p>
+
+            <!-- 🔥 STOCK INFO -->
+            <small class="text-muted">
+                Stock Available: {{ item.product.stock }}
+            </small>
+
+            <!-- 🔥 QUANTITY CONTROLS -->
+            <div class="qty-box mt-2">
+
+                <!-- ➖ DECREASE -->
+                {% if item.quantity > 1 %}
+                    <a href="{% url 'decrease_qty' item.id %}" class="qty-btn">-</a>
+                {% else %}
+                    <span class="qty-btn disabled">-</span>
+                {% endif %}
+
+                <!-- NUMBER -->
+                <span class="qty-number">{{ item.quantity }}</span>
+
+                <!-- ➕ INCREASE (WITH STOCK LIMIT) -->
+                {% if item.quantity < item.product.stock %}
+                    <a href="{% url 'increase_qty' item.id %}" class="qty-btn">+</a>
+                {% else %}
+                    <span class="qty-btn disabled">+</span>
+                {% endif %}
+
+                <!-- ❌ REMOVE -->
+                <a href="{% url 'remove_item' item.id %}" class="remove-btn">
+                    Remove
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="text-end">
+        <h5 class="fw-bold">₹ {{ item.total_price }}</h5>
+    </div>
+
+</div>
+{% empty %}
+<p class="text-muted">Your cart is empty</p>
+{% endfor %}
+
+<hr>
+
+<div class="text-end">
+
+    <h4 class="fw-bold mb-3">Total: ₹ {{ total }}</h4>
+
+    {% if cart_items %}
+    <a href="{% url 'checkout' %}" class="btn checkout-btn">
+        Proceed to Checkout
+    </a>
+    {% else %}
+    <button class="btn checkout-btn disabled">
+        Cart is Empty
+    </button>
+    {% endif %}
+
+</div>
+
+</div>
+
+<style>
+.cart-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.cart-img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    background: #f5f7f7;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* QUANTITY */
+.qty-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qty-btn {
+    background: #212529;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.qty-btn:hover {
+    background: black;
+}
+
+.qty-btn.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.qty-number {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* REMOVE */
+.remove-btn {
+    margin-left: 15px;
+    color: red;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.remove-btn:hover {
+    text-decoration: underline;
+}
+
+/* CHECKOUT */
+.checkout-btn {
+    background: linear-gradient(135deg, #212529, #000);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.checkout-btn:hover {
+    background: black;
+    transform: translateY(-2px);
+}
+
+.checkout-btn.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+</style>
+
+{% endblock %}

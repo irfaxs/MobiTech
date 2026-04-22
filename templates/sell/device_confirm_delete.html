@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container mt-5 text-center">
+
+
+<div class="delete-card">
+
+    <h3 class="fw-bold text-danger mb-3">
+        ⚠️ Delete Device
+    </h3>
+
+    <p class="mb-3">
+        Are you sure you want to delete:
+    </p>
+
+    <h5 class="fw-bold mb-4">
+        {{ object.name }}
+    </h5>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-danger px-4">
+            Yes, Delete
+        </button>
+
+        <a href="/" class="btn btn-secondary px-4">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+
+</div>
+
+<style>
+.delete-card {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+</style>
+
+{% endblock %}
